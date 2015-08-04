@@ -1,0 +1,24 @@
+.m-signature-pad {
+	margin: 0 0 2em;
+	position: relative;
+	width: 100%;
+	height: 225px;
+	z-index: 5000;
+}
+
+.m-signature-pad--body {
+	width: 100%;
+}
+
+.m-signature-pad--body canvas {
+	background: #ffffff;
+	border: none;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+	width: 98%;
+	height: 200px;
+    margin:25px auto;
+    display:block;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
