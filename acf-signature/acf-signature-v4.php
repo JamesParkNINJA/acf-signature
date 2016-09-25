@@ -20,8 +20,8 @@ class acf_field_signature extends acf_field
 	{
 		// vars
 		$this->name = 'signature';
-		$this->label = __('Signature');
-		$this->category = __("Basic",'acf'); // Basic, Content, Choice, etc
+		$this->label = __('Signature', 'acf-signature');
+		$this->category = __('Basic', 'acf'); // Basic, Content, Choice, etc
 		$this->defaults = array(
 			// add default here to merge into your field.
 			// This makes life easy when creating the field options as you don't need to use any if( isset('') ) logic. eg:
@@ -58,7 +58,7 @@ class acf_field_signature extends acf_field
 
 	function create_options($field)
 	{
-		
+
 	}
 
 
@@ -86,7 +86,7 @@ class acf_field_signature extends acf_field
 					</div>
 					<div class="m-signature-pad--footer">
 						<?php /** / ?><div class="m-signature-pad--description">Sign above</div><?php /**/ ?>
-						<a href="#clear" class="m-signature-pad--clear btn btn-default btn-xs button button-small" data-action="clear">Clear</a>
+						<a href="#clear" class="m-signature-pad--clear btn btn-default btn-xs button button-small" data-action="clear"><?php _e('Clear', 'acf-signature'); ?></a>
 						<?php /** / ?><button class="save" data-action="save">Save</button><?php /**/ ?>
 					</div>
 				</div>
@@ -286,7 +286,7 @@ class acf_field_signature extends acf_field
 		// If not empty, build an image, otherwise return an empty string
 		if ( $value && is_string($value) )
 		{
-			$value = '<img src="' . $value . '" alt="Signature" />';
+			$value = '<img src="' . $value . '" alt="' . __('Signature', 'acf-signature') . '" />';
 		}
 		return $value;
 	}
