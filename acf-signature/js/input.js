@@ -18,7 +18,8 @@
             canvas = canvasObj[0],
             inputObj = wrapper.find("input"),
             input = inputObj[0],
-            signaturePad;
+            signaturePad,
+	    touched = false;
         
         console.log(canvas);
         
@@ -41,7 +42,7 @@
 
         var data = $(input).val();
         if ( data.length ) {
-            console.log(data);
+            // console.log(data);
             signaturePad.fromDataURL( data );
         }
 
@@ -50,12 +51,18 @@
             signaturePad.clear();
             $(input).val('');
         });
+		
+	$(canvas).on("touchstart mousedown", function(event){
+	    touched = true;
+	});
 
         $(canvas).on("touchend mouseup mouseleave", function(event) {
             if ( signaturePad.isEmpty() ) {
                 $(input).val('');
             } else {
-                $(input).val(signaturePad.toDataURL());
+	        if(touched){
+                    $(input).val(signaturePad.toDataURL());
+		}
             }
         });
 	}
