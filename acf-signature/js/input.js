@@ -69,6 +69,37 @@
 	
 	
 	if( typeof acf.add_action !== 'undefined' ) {
+		
+		/*
+		* enable_field (ACF5)
+		* Triggered when a disabled field is enabled (conditional logic). 
+		* This field action can also be targeted using a specific type, name or key.
+		*/
+		
+		acf.add_action('enable_field/type=signature', function ($el) {
+           	 setTimeout(function () {
+
+                	let $canvas = $el.find('canvas');
+                	let $input = $el.find('input');
+                	let width = $el.find('.m-signature-pad--body').outerWidth();
+
+
+                	// Adjust for 98% width of canvas
+                	width = parseInt(width);
+                	width = Math.ceil(width * .98);
+                	$canvas.attr('height', 200).attr('width', width);
+
+                	// Reset canvas image from input
+                	let signaturePad = new SignaturePad($canvas[0]);
+                	let data = $input.val();
+
+                	if (data.length) {
+                    		signaturePad.fromDataURL(data);
+                	}
+
+            		}, 500);
+        	});
+		
 	
 		/*
 		*  ready append (ACF5)
