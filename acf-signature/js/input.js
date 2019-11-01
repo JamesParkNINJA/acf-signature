@@ -126,7 +126,30 @@
 			
 		});
 		
-		
+		/*
+		*  show_field (ACF5)
+		*
+		*  When a field is shown, i.e. when a tab is made visible.
+		*  Check for the data type signature and run initialize_field for each of them.
+		*
+		*  @type	event
+		*  @date	01/11/19
+		*
+		*  @param	$el (jQuery selection) the jQuery element which contains the ACF fields
+		*  @return	n/a
+		*/
+
+		acf.add_action('show_field', function( $el ){
+			var signatureFields = $(document).find('.acf-field[data-type="signature"]:not(.acf-hidden)');
+			if (signatureFields != undefined && signatureFields.length > 0) {
+				signatureFields.each(function(){				
+					initialize_field( $(this) );				
+				});
+
+			}
+			
+		});
+
 	} else {
 		
 		
