@@ -4,7 +4,7 @@
 	function initialize_field( $el ) {
 		
 		//$el.doStuff();
-		console.log($el);
+		//console.log($el);
         
         var sigMobile = false; //initiate as false
         
@@ -21,7 +21,7 @@
             signaturePad,
 	    touched = false;
         
-        console.log(canvas);
+        //console.log(canvas);
         
         // Adjust canvas coordinate space taking into account pixel ratio,
         // to make it look crisp on mobile devices.
