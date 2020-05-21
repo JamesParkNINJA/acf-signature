@@ -1,8 +1,8 @@
 <?php
 
 class acf_field_signature extends acf_field {
-	
-	
+
+
 	/*
 	*  __construct
 	*
@@ -15,55 +15,55 @@ class acf_field_signature extends acf_field {
 	*  @param	n/a
 	*  @return	n/a
 	*/
-	
+
 	function __construct() {
-		
+
 		/*
 		*  name (string) Single word, no spaces. Underscores allowed
 		*/
-		
+
 		$this->name = 'signature';
-		
-		
+
+
 		/*
 		*  label (string) Multiple words, can include spaces, visible when selecting a field type
 		*/
-		
+
 		$this->label = __('Signature', 'acf-signature');
-		
-		
+
+
 		/*
 		*  category (string) basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
 		*/
-		
-		$this->category = 'basic';
-		
-		
+
+		$this->category = __('Basic', 'acf');
+
+
 		/*
 		*  defaults (array) Array of default settings which are merged into the field object. These are used later in settings
 		*/
-		
+
 		$this->defaults = array(
 			//'font_size'	=> 14,
 		);
-		
-		
+
+
 		/*
 		*  l10n (array) Array of strings that are used in JavaScript. This allows JS strings to be translated in PHP and loaded via:
 		*  var message = acf._e('signature', 'error');
 		*/
-		
+
 		$this->l10n = array(
 			'error'	=> __('Error! Please enter a correct signature', 'acf-signature'),
 		);
-		
-				
+
+
 		// do not delete!
     	parent::__construct();
-    	
+
 	}
-	
-	
+
+
 	/*
 	*  render_field_settings()
 	*
@@ -76,9 +76,9 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
+
 	function render_field_settings( $field ) {
-		
+
 		/*
 		*  acf_render_field_setting
 		*
@@ -88,7 +88,7 @@ class acf_field_signature extends acf_field {
 		*  More than one setting can be added by copy/paste the above code.
 		*  Please note that you must also have a matching $defaults value for the field name (font_size)
 		*/
-		
+
 		/* acf_render_field_setting( $field, array(
 			'label'			=> __('Font Size','acf-signature'),
 			'instructions'	=> __('Customise the input font size','acf-signature'),
@@ -98,9 +98,9 @@ class acf_field_signature extends acf_field {
 		)); */
 
 	}
-	
-	
-	
+
+
+
 	/*
 	*  render_field()
 	*
@@ -115,24 +115,24 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
+
 	function render_field( $field ) {
-		
-		
+
+
 		/*
 		*  Review the data of $field.
 		*  This will show what data is available
 		*/
-		
+
 		/* echo '<pre>';
 			print_r( $field );
 		echo '</pre>'; */
-		
-		
+
+
 		/*
 		*  Create a simple text input using the 'font_size' setting.
 		*/
-		
+
 		?>
 		<div class="acf-input-wrap">
             <div id="signature-pad" class="m-signature-pad">
@@ -141,14 +141,14 @@ class acf_field_signature extends acf_field {
                     <canvas></canvas>
                 </div>
                 <div class="m-signature-pad--footer">
-                    <a href="#clear" class="m-signature-pad--clear btn btn-default btn-xs button button-small" data-action="clear">Clear</a>
+                    <a href="#clear" class="m-signature-pad--clear btn btn-default btn-xs button button-small" data-action="clear"><?php _e('Clear', 'acf-signature'); ?></a>
                 </div>
             </div>
         </div>
 		<?php
 	}
-	
-		
+
+
 	/*
 	*  input_admin_enqueue_scripts()
 	*
@@ -162,29 +162,29 @@ class acf_field_signature extends acf_field {
 	*  @param	n/a
 	*  @return	n/a
 	*/
-	
+
 	function input_admin_enqueue_scripts() {
-		
+
 		$dir = plugin_dir_url( __FILE__ );
-		
-		
+
+
         // Pad JS
-        
+
         wp_register_script('signaturepad', "{$dir}js/signature_pad.js");
 		wp_enqueue_script('signaturepad');
-        
+
 		// register & include JS
 		wp_register_script( 'acf-input-signature', "{$dir}js/input.js" );
 		wp_enqueue_script('acf-input-signature');
-		
-		
+
+
 		// register & include CSS
-		wp_register_style( 'acf-input-signature', "{$dir}css/input.css" ); 
+		wp_register_style( 'acf-input-signature', "{$dir}css/input.css" );
 		wp_enqueue_style('acf-input-signature');
-		
-		
+
+
 	}
-	
+
 	/*
 	*  input_admin_head()
 	*
@@ -200,21 +200,21 @@ class acf_field_signature extends acf_field {
 	*/
 
 	/*
-		
+
 	function input_admin_head() {
-	
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
    	*  input_form_data()
    	*
    	*  This function is called once on the 'input' page between the head and footer
-   	*  There are 2 situations where ACF did not load during the 'acf/input_admin_enqueue_scripts' and 
+   	*  There are 2 situations where ACF did not load during the 'acf/input_admin_enqueue_scripts' and
    	*  'acf/input_admin_head' actions because ACF did not know it was going to be used. These situations are
    	*  seen on comments / user edit forms on the front end. This function will always be called, and includes
    	*  $args that related to the current screen such as $args['post_id']
@@ -226,18 +226,18 @@ class acf_field_signature extends acf_field {
    	*  @param	$args (array)
    	*  @return	n/a
    	*/
-   	
+
    	/*
-   	
+
    	function input_form_data( $args ) {
-	   	
-		
-	
+
+
+
    	}
-   	
+
    	*/
-	
-	
+
+
 	/*
 	*  input_admin_footer()
 	*
@@ -253,16 +253,16 @@ class acf_field_signature extends acf_field {
 	*/
 
 	/*
-		
+
 	function input_admin_footer() {
-	
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  field_group_admin_enqueue_scripts()
 	*
@@ -278,14 +278,14 @@ class acf_field_signature extends acf_field {
 	*/
 
 	/*
-	
+
 	function field_group_admin_enqueue_scripts() {
-		
+
 	}
-	
+
 	*/
 
-	
+
 	/*
 	*  field_group_admin_head()
 	*
@@ -301,11 +301,11 @@ class acf_field_signature extends acf_field {
 	*/
 
 	/*
-	
+
 	function field_group_admin_head() {
-	
+
 	}
-	
+
 	*/
 
 
@@ -323,14 +323,14 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
+
 	function load_value( $value, $post_id, $field ) {
-		
+
 		return $value;
-		
+
 	}
-	
-	
+
+
 	/*
 	*  update_value()
 	*
@@ -345,15 +345,15 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
-	
+
+
 	function update_value( $value, $post_id, $field ) {
-		
+
 		return $value;
-		
+
 	}
-	
-	
+
+
 	/*
 	*  format_value()
 	*
@@ -369,27 +369,27 @@ class acf_field_signature extends acf_field {
 	*
 	*  @return	$value (mixed) the modified value
 	*/
-		
-	
+
+
 	function format_value( $value, $post_id, $field ) {
 		// bail early if no value
 		if( empty($value) ) {
-		
+
 			return $value;
-			
+
 		}
-		
+
 		// apply setting
 		if ( $value && is_string($value) )
 		{
-			$value = '<img src="' . $value . '" alt="Signature" />';
+			$value = '<img src="' . $value . '" alt="' . __('Signature', 'acf-signature') . '" />';
 		}
-        
+
 		// return
 		return $value;
 	}
-	
-	
+
+
 	/*
 	*  validate_value()
 	*
@@ -407,33 +407,33 @@ class acf_field_signature extends acf_field {
 	*  @param	$input (string) the corresponding input name for $_POST value
 	*  @return	$valid
 	*/
-	
+
 	/*
-	
+
 	function validate_value( $valid, $value, $field, $input ){
-		
+
 		// Basic usage
 		if( $value < $field['custom_minimum_setting'] )
 		{
 			$valid = false;
 		}
-		
-		
+
+
 		// Advanced usage
 		if( $value < $field['custom_minimum_setting'] )
 		{
 			$valid = __('The value is too little!','acf-signature'),
 		}
-		
-		
+
+
 		// return
 		return $valid;
-		
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  delete_value()
 	*
@@ -448,18 +448,18 @@ class acf_field_signature extends acf_field {
 	*  @param	$key (string) the $meta_key which the value was deleted
 	*  @return	n/a
 	*/
-	
+
 	/*
-	
+
 	function delete_value( $post_id, $key ) {
-		
-		
-		
+
+
+
 	}
-	
+
 	*/
-	
-	
+
+
 	/*
 	*  load_field()
 	*
@@ -467,20 +467,20 @@ class acf_field_signature extends acf_field {
 	*
 	*  @type	filter
 	*  @date	23/01/2013
-	*  @since	3.6.0	
+	*  @since	3.6.0
 	*
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
-	
+
+
 	function load_field( $field ) {
-		
+
 		return $field;
-		
-	}	
-	
-	
+
+	}
+
+
 	/*
 	*  update_field()
 	*
@@ -493,15 +493,15 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
-	
+
+
 	function update_field( $field ) {
-		
+
 		return $field;
-		
-	}	
-	
-	
+
+	}
+
+
 	/*
 	*  delete_field()
 	*
@@ -514,18 +514,18 @@ class acf_field_signature extends acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	n/a
 	*/
-	
+
 	/*
-	
+
 	function delete_field( $field ) {
-		
-		
-		
-	}	
-	
+
+
+
+	}
+
 	*/
-	
-	
+
+
 }
 
 

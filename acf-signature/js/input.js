@@ -1,16 +1,15 @@
 (function($){
-	
-	
+
+
 	function initialize_field( $el ) {
-		
+
 		//$el.doStuff();
-		//console.log($el);
-        
+
         var sigMobile = false; //initiate as false
-        
-        // device detection        
+
+        // device detection
         if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) sigMobile = true;
-        
+
         var wrapper = $el,
             clearButtonObj = wrapper.find("[data-action=clear]"),
             clearButton = clearButtonObj[0],
@@ -19,15 +18,14 @@
             inputObj = wrapper.find("input"),
             input = inputObj[0],
             signaturePad,
-	    touched = false;
-        
-        //console.log(canvas);
-        
+            visible = false;
+
         // Adjust canvas coordinate space taking into account pixel ratio,
         // to make it look crisp on mobile devices.
         // This also causes canvas to be cleared.
+
         function resizeCanvas() {
-            var ratio =  window.devicePixelRatio || 1;
+            var ratio =  Math.max(window.devicePixelRatio || 1, 1);
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
             canvas.getContext("2d").scale(ratio, ratio);
@@ -36,71 +34,50 @@
         {
             window.onresize = resizeCanvas();
         }
-        resizeCanvas();
 
-        signaturePad = new SignaturePad(canvas);
+        setInterval(function(){
 
-        var data = $(input).val();
-        if ( data.length ) {
-            // console.log(data);
-            signaturePad.fromDataURL( data );
-        }
+        	if ( $(canvasObj).is(':visible') && !visible ) {
+        		resizeCanvas();
+				var signaturePad = new SignaturePad(canvas, {
+				    backgroundColor: 'rgba(255, 255, 255, 0)',
+				    penColor: 'rgb(0, 0, 0)',
+				    velocityFilterWeight: .7,
+				    minWidth: 0.5,
+				    maxWidth: 2.5,
+				    throttle: 16,
+				    minPointDistance: 3,
+				});
+				visible = true;
+		        var data = $(input).val();
+		        if ( data.length ) {
+		            signaturePad.fromDataURL( data );
+		        }
 
-        $(clearButton).on("click", function(e) {
-            e.preventDefault();
-            signaturePad.clear();
-            $(input).val('');
-        });
-		
-	$(canvas).on("touchstart mousedown", function(event){
-	    touched = true;
-	});
+		        $(clearButton).on("click", function(e) {
+		            e.preventDefault();
+		            signaturePad.clear();
+		            $(input).val('');
+		        });
 
-        $(canvas).on("touchend mouseup mouseleave", function(event) {
-            if ( signaturePad.isEmpty() ) {
-                $(input).val('');
-            } else {
-	        if(touched){
-                    $(input).val(signaturePad.toDataURL());
-		}
-            }
-        });
+		        $(canvas).on("touchend mouseup mouseleave", function(event) {
+		        	if ( signaturePad ) {
+			            if ( signaturePad.isEmpty() ) {
+			                $(input).val('');
+			            } else {
+			                $(input).val(signaturePad.toDataURL());
+			            }
+		            }
+		        });
+			}
+    	}, 100);
+
+
 	}
-	
-	
+
+
 	if( typeof acf.add_action !== 'undefined' ) {
-		
-		/*
-		* enable_field (ACF5)
-		* Triggered when a disabled field is enabled (conditional logic). 
-		* This field action can also be targeted using a specific type, name or key.
-		*/
-		
-		acf.add_action('enable_field/type=signature', function ($el) {
-           	 setTimeout(function () {
 
-                	let $canvas = $el.find('canvas');
-                	let $input = $el.find('input');
-                	let width = $el.find('.m-signature-pad--body').outerWidth();
-
-
-                	// Adjust for 98% width of canvas
-                	width = parseInt(width);
-                	width = Math.ceil(width * .98);
-                	$canvas.attr('height', 200).attr('width', width);
-
-                	// Reset canvas image from input
-                	let signaturePad = new SignaturePad($canvas[0]);
-                	let data = $input.val();
-
-                	if (data.length) {
-                    		signaturePad.fromDataURL(data);
-                	}
-
-            		}, 500);
-        	});
-		
-	
 		/*
 		*  ready append (ACF5)
 		*
@@ -114,49 +91,26 @@
 		*  @param	$el (jQuery selection) the jQuery element which contains the ACF fields
 		*  @return	n/a
 		*/
-		
+
 		acf.add_action('ready append', function( $el ){
-			
+
 			// search $el for fields of type 'signature'
 			acf.get_fields({ type : 'signature'}, $el).each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-			
-		});
-		
-		/*
-		*  show_field (ACF5)
-		*
-		*  When a field is shown, i.e. when a tab is made visible.
-		*  Check for the data type signature and run initialize_field for each of them.
-		*
-		*  @type	event
-		*  @date	01/11/19
-		*
-		*  @param	$el (jQuery selection) the jQuery element which contains the ACF fields
-		*  @return	n/a
-		*/
 
-		acf.add_action('show_field', function( $el ){
-			var signatureFields = $(document).find('.acf-field[data-type="signature"]:not(.acf-hidden)');
-			if (signatureFields != undefined && signatureFields.length > 0) {
-				signatureFields.each(function(){				
-					initialize_field( $(this) );				
-				});
-
-			}
-			
 		});
+
 
 	} else {
-		
-		
+
+
 		/*
 		*  acf/setup_fields (ACF4)
 		*
-		*  This event is triggered when ACF adds any new elements to the DOM. 
+		*  This event is triggered when ACF adds any new elements to the DOM.
 		*
 		*  @type	function
 		*  @since	1.0.0
@@ -167,18 +121,18 @@
 		*
 		*  @return	n/a
 		*/
-		
+
 		$(document).on('acf/setup_fields', function(e, postbox){
-			
+
 			$(postbox).find('.field[data-field_type="signature"]').each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-		
+
 		});
-	
-	
+
+
 	}
 
 
